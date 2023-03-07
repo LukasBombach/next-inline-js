@@ -1,3 +1,10 @@
+import { InlineScript } from "../InlineScript";
+
 export default function Home() {
-  return <main>home</main>;
+  return (
+    <main>
+      home
+      <InlineScript src={import("../log")} />
+    </main>
+  );
 }
