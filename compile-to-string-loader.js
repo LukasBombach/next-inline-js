@@ -12,6 +12,8 @@ module.exports = function compileToStringLoader(content, map, meta) {
   }
 
   this.importModule(this.request + "?NOPE").then(source => {
+    console.log(source);
+
     callback(null, `module.exports = ${JSON.stringify(source)};`);
   });
 };

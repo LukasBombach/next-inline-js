@@ -10,10 +10,11 @@ type InlineScriptProps<
 } & Props;
 
 export const InlineScript = <S extends Promise<any>>({ src, ...props }: InlineScriptProps<S>) => {
-  return dynamic(() =>
+  const DynamicScript = dynamic(() =>
     src.then(code => {
       const Script = () => <script {...props} dangerouslySetInnerHTML={{ __html: code }} />;
       return Script;
     })
   );
+  return <DynamicScript />;
 };
