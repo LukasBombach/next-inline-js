@@ -4,7 +4,10 @@ import type { FC } from "react";
 
 type ScriptElementProps = Omit<JSX.IntrinsicElements["script"], "src" | "dangerouslySetInnerHTML">;
 
-type InlineScriptProps<Src extends Promise<any>, Props = Src extends Promise<infer T> ? T : never> = {
+type InlineScriptProps<
+  Src extends Promise<any>,
+  Props = Src extends Promise<infer T> ? (T extends { onMount: (props: infer P) => void } ? P : never) : never
+> = {
   src: Src;
 } & Props;
 
