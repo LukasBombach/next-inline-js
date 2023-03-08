@@ -5,6 +5,7 @@ const { getRemainingRequest } = require("loader-utils");
  */
 module.exports = function compileToStringLoader(content, map, meta) {
   const callback = this.async();
+  const { compiler, compilation } = this;
 
   if (/NOPE/.test(this.request)) {
     callback(null, content);
@@ -12,8 +13,7 @@ module.exports = function compileToStringLoader(content, map, meta) {
   }
 
   this.importModule(this.request + "?NOPE").then(source => {
-    console.log(source);
-
+    console.log(source, compiler, compilation);
     callback(null, `module.exports = ${JSON.stringify(source)};`);
   });
 };
