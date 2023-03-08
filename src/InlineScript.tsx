@@ -6,7 +6,7 @@ type ScriptElementProps = Omit<JSX.IntrinsicElements["script"], "src" | "dangero
 
 type InlineScriptProps<
   Src extends Promise<any>,
-  Props = Src extends Promise<infer T> ? (T extends { onMount: (props: infer P) => void } ? P : never) : never
+  Props = Src extends Promise<infer R> ? (R extends { onMount: (props: infer P) => void } ? P : never) : never
 > = {
   src: Src;
 } & Props;
