@@ -3,11 +3,11 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
+    "clean": "rimraf dist coverage 'node_modules/.cache' '.next' '*.tsbuildinfo'",
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint",
-    "clean": "rimraf dist coverage 'node_modules/.cache' '.next' '*.tsbuildinfo'"
+    "lint": "next lint"
   },
   "dependencies": {
     "@types/node": "18.14.6",
