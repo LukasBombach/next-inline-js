@@ -1,14 +1,11 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   reactStrictMode: true,
-  webpack(config, options) {
-    // rules are chained and applied bottom to top so this
-    // one will modify the original sources and then let
-    // next transpile everything
+  webpack(config) {
     config.module.rules.push({
-      test: /inline-script\.(tsx|ts)$/,
-      exclude: /node_modules/,
-      use: "./compile-to-string-loader",
+      test: /stylesheet\.ts$/i,
+      use: ["./a-pitching-loader.js"],
+      type: "asset/source", // we set type to 'asset/source' as the loader will return a string
     });
 
     return config;
