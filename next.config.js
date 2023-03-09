@@ -7,7 +7,6 @@ const nextConfig = {
     // next transpile everything
     config.module.rules.push({
       test: /inline-script\.(tsx|ts)$/,
-      exclude: /node_modules/,
       use: "./compile-to-string-loader",
     });
 
