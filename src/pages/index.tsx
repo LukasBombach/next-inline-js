@@ -1,10 +1,7 @@
-import { InlineScript } from "../InlineScript";
-
 export default function Home() {
-  return (
-    <main>
-      home
-      <InlineScript src={import("../log.inline-script")} foo="bar" />
-    </main>
-  );
+  import("../log.inline-script").then(result => {
+    console.log("loaded:", typeof result, JSON.stringify(result));
+  });
+
+  return <main>home</main>;
 }

@@ -1,24 +1,10 @@
-const { getRemainingRequest } = require("loader-utils");
-
 /**
+ * @this {import('webpack').LoaderContext<{}>}
  * @type {import('webpack').LoaderDefinitionFunction}
  */
-module.exports = function compileToStringLoader(content, map, meta) {
+function compileToStringLoader(content, sourceMap, additionalData) {
   const callback = this.async();
-  const loaderContext = this;
+  callback(null, content, sourceMap, additionalData);
+}
 
-  if (/NOPE/.test(this.request)) {
-    callback(null, content);
-    return;
-  }
-
-  debugger;
-
-  this.importModule(this.request + "?NOPE").then(source => {
-    console.log(loaderContext);
-    callback(null, `module.exports = ${JSON.stringify(source)};`);
-    setTimeout(() => {
-      debugger;
-    }, 0);
-  });
-};
+module.exports = compileToStringLoader;
