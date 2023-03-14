@@ -1,75 +1,20 @@
-// const { getRemainingRequest } = require("loader-utils");
-//
 // /**
-//  * @type {import('webpack').LoaderDefinitionFunction}
+//  * @type {import('webpack').PitchLoaderDefinitionFunction}
 //  */
-// module.exports = function compileToStringLoader(content, map, meta) {
-//   const callback = this.async();
-//   const loaderContext = this;
-//
-//   if (/NOPE/.test(this.request)) {
-//     callback(null, content);
-//     return;
-//   }
-//
-//   debugger;
-//
-//   this.importModule(this.request + "?NOPE").then(source => {
-//     console.log(loaderContext);
-//     callback(null, `module.exports = ${JSON.stringify(source)};`);
-//     setTimeout(() => {
-//       debugger;
-//     }, 0);
-//   });
-// };
+// module.exports.pitch = async function (remaining, previous, data) {
 
 /**
  * @type {import('webpack').LoaderDefinitionFunction}
  */
-/* module.exports = async function compileToStringLoader(content, map, meta) {
-
-  if (!/webpack\[asset\/source\]/.test(this.request)) {
-    debugger;
+module.exports = async function (content, map, meta) {
+  if (/NO_RECURSION/.test(this.request)) {
+    return content;
   }
 
-   if (/NOPE/.test(this.request)) {
-     callback(null, content);
-     return;
-   }
+  if (/DO_COMPILE/.test(this.request)) {
+    const result = await this.importModule(this.request + "?NO_RECURSION");
+    return result.default || result;
+  }
 
-  const result = await this.importModule(this.request);
-  return result.default || result;
-
-
-} */
-
-/**
- * @type {import('webpack').PitchLoaderDefinitionFunction}
- */
-// module.exports.pitch = async function (remaining, previous, data) {
-// const loaderContext = this;
-
-// console.log(remaining, previous, data, loaderContext);
-
-// debugger;
-
-//if (!/webpack\[asset\/source\]/.test(this.request)) {
-//  const result = await this.importModule(this.resourcePath + ".webpack[asset/source]" + "!=!" + this.request);
-//  debugger;
-//  return result.default || result;
-//}
-
-//   if (!/COMPILE_XX/.test(this.request)) {
-//     const result = await this.importModule(this.request);
-//     return result.default || result;
-//   }
-//
-//
-//   if (!/NOPE/.test(this.request)) {
-//     const result = await this.importModule(
-//       /* this.resourcePath + ".webpack[asset/source]" + "!=!" + */ this.request + "?NOPE"
-//     );
-//     debugger;
-//     return result.default || result;
-//   }
-// };
+  return "module.exports = require('raw-loader!" + this.request + "?DO_COMPILE');";
+};
