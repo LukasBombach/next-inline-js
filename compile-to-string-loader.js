@@ -7,14 +7,16 @@
  * @type {import('webpack').LoaderDefinitionFunction}
  */
 module.exports = async function (content, map, meta) {
-  if (/NO_RECURSION/.test(this.request)) {
+  if (/GET_SOURCE_CODE/.test(this.request)) {
     return content;
   }
 
-  if (/DO_COMPILE/.test(this.request)) {
-    const result = await this.importModule(this.request + "?NO_RECURSION");
-    return result.default || result;
-  }
+  this._compilation.hooks.executeModule.tap("MyPlugin", (...params) => {
+    debugger;
+    console.log(params);
+  });
 
-  return "module.exports = require('raw-loader!" + this.request + "?DO_COMPILE');";
+  const result = await this.importModule(this.request + "?GET_SOURCE_CODE");
+  debugger;
+  return result.default || result;
 };
