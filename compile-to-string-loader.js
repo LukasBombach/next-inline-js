@@ -19,8 +19,6 @@ function compileToStringLoader(content, sourceMap, additionalData) {
 
   this.addDependency(this.resourcePath);
 
-  debugger;
-
   callback(null, content, sourceMap, additionalData);
 }
 
