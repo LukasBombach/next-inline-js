@@ -1,25 +1,27 @@
-const { getRemainingRequest } = require("loader-utils");
+const path = require("node:path");
 
 /**
+ * @this {import('webpack').LoaderContext<{}>}
  * @type {import('webpack').LoaderDefinitionFunction}
  */
-module.exports = function compileToStringLoader(content, map, meta) {
+function compileToStringLoader(content, sourceMap, additionalData) {
   const callback = this.async();
-  const loaderContext = this;
 
-  if (/NOPE/.test(this.request)) {
-    callback(null, content);
-    return;
-  }
+  const webpack = this._compiler.webpack;
+  const compiler = this._compiler;
+  const context = compiler.context;
+  const entry = path.relative(context, this.resourcePath);
+
+  new webpack.EntryPlugin(context, entry, {
+    name: "my-entry-test-name",
+    filename: "my-entry-test-filename",
+  }).apply(compiler);
+
+  this.addDependency(this.resourcePath);
 
   debugger;
 
-  this.importModule(this.request + "?NOPE")
-    .then(mod => {
-      callback(null, `module.exports = ${JSON.stringify(mod)};`);
-    })
-    .then(() => {
-      console.log(loaderContext);
-      debugger;
-    });
-};
+  callback(null, content, sourceMap, additionalData);
+}
+
+module.exports = compileToStringLoader;
