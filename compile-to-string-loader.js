@@ -14,10 +14,12 @@ function compileToStringLoader(content, sourceMap, additionalData) {
 
   new webpack.EntryPlugin(context, entry, {
     name: "my-entry-test-name",
-    filename: "my-entry-test-filename",
+    filename: "my-entry-test-filename.js",
   }).apply(compiler);
 
   this.addDependency(this.resourcePath);
+
+  debugger;
 
   callback(null, content, sourceMap, additionalData);
 }
